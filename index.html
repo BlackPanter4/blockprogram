@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f9d58">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">
+<title>Quantum Notes - Isaías Q777</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Calibri;background:#111;color:#eee}
+header{background:#0f9d58;padding:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+button{border:0;padding:8px 12px;border-radius:8px;font-weight:bold;cursor:pointer}
+#bEditar{width:100%;height:45vh;background:#1e1e1e;color:#0f0;padding:10px;font-family:monospace;font-size:14px;border:1px solid #333}
+#preview{width:100%;height:35vh;background:white;border:0}
+.bar{display:flex;gap:6px;padding:6px;background:#222;overflow:auto}
+.small{font-size:12px;opacity:.7;padding:6px;text-align:center}
+.card{background:#222;padding:10px;border-radius:10px;margin:10px}
+input{width:100%;padding:10px;border-radius:8px;border:1px solid #333;margin-top:6px;background:#111;color:#fff}
+.oculto{filter:blur(6px)}
+</style>
+</head>
+<body>
+<header>
+<b>📝 Block Quantum - Agente89</b>
+<button onclick="guardar()">💾 Guardar</button>
+<button onclick="preview()">👁️ Ver</button>
+<button onclick="limpiar()">🗑️ Limpiar</button>
+<button onclick="reporte()">📲 Reporte</button>
+</header>
+
+<div class="card">
+  <b>🔑 TOKEN SEGURO LOCAL (no se sube a internet)</b><br>
+  <input id="tok" type="password" placeholder="Pega aquí tu token 123456:AAH...">
+  <div style="display:flex;gap:6px;margin-top:8px">
+    <button onclick="guardarToken()" style="background:#0f9d58;color:white;flex:1">Guardar Token Local</button>
+    <button onclick="generarCodigo()" style="background:#4285f4;color:white;flex:1">Generar bot.py</button>
+  </div>
+  <p style="font-size:11px;opacity:.6">Se guarda solo en este celular con localStorage. Yo nunca lo veo.</p>
+</div>
+
+<div class="bar">
+<button onclick="insertar('<!-- NUEVO BLOQUE -->\n<div>\n  Treider de película, curso exprés.\n</div>')">+ Bloque</button>
+<button onclick="insertar('<p>Mejor precio de compra $ 15,57</p>\n<p>Precio actual $ 17,46</p>\n<p>Mejor precio de venta $ 18,70</p>')">+ Precios</button>
+<button onclick="insertar('<script>\n// Bot Q777\nlet COMPRA=15.57, VENTA=18.70;\n<\/script>')">+ Bot</button>
+</div>
+
+<textarea id="bEditar" placeholder="Pega o escribe aquí tu código...">
+<!-- HOJA1 - Quantum Company Luchanas -->
+<div style="padding:10px; background:#e8f5e9; color:#111; font-family:Calibri">
+  <h3>Treider de película, curso exprés.</h3>
+  <p>Mejor precio de venta $ <b>18.70</b></p>
+  <p>Precio actual de la moneda o divisa $ <b>17.46</b></p>
+  <p>Mejor precio de compra $ <b>15,57</b></p>
+  <p>Crear bot en binance, easy free.</p>
+  <p>Reporte: 8713329005 - Agente89_bot</p>
+</div>
+</textarea>
+
+<iframe id="preview"></iframe>
+<div class="small">Q777 | Suma=36.16 | PWA Offline | Guardado automático | Isaías Luchanas</div>
+
+<script>
+const area = document.getElementById('bEditar');
+const prev = document.getElementById('preview');
+area.value = localStorage.getItem('quantum_notes') || area.value;
+document.getElementById('tok').value = localStorage.getItem('bot_token')||'';
+preview();
+
+function guardarToken(){ localStorage.setItem('bot_token', document.getElementById('tok').value); alert('✅ Token guardado local'); }
+function generarCodigo(){
+  let t = localStorage.getItem('bot_token') || document.getElementById('tok').value;
+  if(!t){ alert('Pega tu token primero'); return; }
+  let codigo = `import json, time\nfrom urllib import request, parse\nTOKEN = "${t}"\nREPORTE = "8713329005"\n\ndef api(m,p={}):\n  url=f"https://api.telegram.org/bot{TOKEN}/{m}"\n  data=parse.urlencode(p).encode() if p else None\n  req=request.Request(url,data=data)\n  with request.urlopen(req,timeout=15) as r:\n    return json.loads(r.read().decode())\n\nprint("Agente89_bot Q777 listo")\noffset=0\nwhile True:\n  try:\n    ups=api(f"getUpdates?offset={offset}&timeout=20")\n    for u in ups.get("result",[]):\n      offset=u["update_id"]+1\n      if "message" in u:\n        chat=u["message"]["chat"]["id"]\n        txt=u["message"]["text"]\n        resp=f"Q777 VEREDICTO: {txt[:100]} - Reporte {REPORTE}"\n        api("sendMessage",{"chat_id":chat,"text":resp})\n  except: time.sleep(2)\n`;
+  area.value = codigo; preview();
+}
+function preview(){
+  const blob = new Blob([area.value], {type:'text/html'});
+  prev.src = URL.createObjectURL(blob);
+  localStorage.setItem('quantum_notes', area.value);
+}
+function guardar(){
+  localStorage.setItem('quantum_notes', area.value);
+  const blob = new Blob([area.value], {type:'text/html'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'block_Q777_'+Date.now()+'.html'; a.click();
+}
+function limpiar(){ if(confirm('¿Borrar todo?')){ area.value=''; preview(); } }
+function insertar(txt){
+  const s = area.selectionStart;
+  area.value = area.value.slice(0,s)+'\n'+txt+'\n'+area.value.slice(s); preview();
+}
+function reporte(){ insertar('<p>🚨 REPORTE Q777 -> 8713329005 - '+new Date().toLocaleString()+'</p>'); }
+area.addEventListener('input', preview);
+setInterval(()=>localStorage.setItem('quantum_notes', area.value), 3000);
+
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
+</script>
+</body>
+</html>
