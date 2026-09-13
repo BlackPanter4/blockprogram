@@ -1,1 +1,16 @@
 
+{
+  "name": "Quantum Notes - Agente89 Q777",
+  "short_name": "Quantum Notes",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#0f9d58",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5968/5968705.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
